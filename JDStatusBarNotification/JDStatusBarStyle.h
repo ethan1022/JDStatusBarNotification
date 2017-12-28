@@ -21,6 +21,12 @@ extern NSString *const JDStatusBarStyleMatrix;
 extern NSString *const JDStatusBarStyleDefault;
 /// This style has a nearly black background with a nearly white Helvetica label.
 extern NSString *const JDStatusBarStyleDark;
+/// These styles used to H2 SDK auto sync.
+extern NSString *const H2StatusBarStyleSyncing;
+extern NSString *const H2StatusBarStyleSyncSucceed;
+extern NSString *const H2StatusBarStyleSyncFailed;
+
+
 
 typedef NS_ENUM(NSInteger, JDStatusBarAnimationType) {
     /// Notification won't animate
@@ -65,6 +71,8 @@ typedef NS_ENUM(NSInteger, JDStatusBarProgressBarPosition) {
 
 /// A correction of the vertical label position in points. Default is 0.0
 @property (nonatomic, assign) CGFloat textVerticalPositionAdjustment;
+
+@property (nonatomic, strong) UIImage *iconImage;
 
 #pragma mark Animation
 

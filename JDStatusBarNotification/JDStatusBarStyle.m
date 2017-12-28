@@ -14,6 +14,9 @@ NSString *const JDStatusBarStyleSuccess = @"JDStatusBarStyleSuccess";
 NSString *const JDStatusBarStyleMatrix  = @"JDStatusBarStyleMatrix";
 NSString *const JDStatusBarStyleDefault = @"JDStatusBarStyleDefault";
 NSString *const JDStatusBarStyleDark    = @"JDStatusBarStyleDark";
+NSString *const H2StatusBarStyleSyncing = @"H2StatusBarStyleSyncing";
+NSString *const H2StatusBarStyleSyncSucceed = @"H2StatusBarStyleSyncSucceed";
+NSString *const H2StatusBarStyleSyncFailed = @"H2StatusBarStyleSyncFailed";
 
 @implementation JDStatusBarStyle
 
