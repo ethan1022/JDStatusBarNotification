@@ -74,6 +74,8 @@ typedef NS_ENUM(NSInteger, JDStatusBarProgressBarPosition) {
 
 @property (nonatomic, strong) UIImage *iconImage;
 
+@property (nonatomic, strong) NSString *styleName;
+
 #pragma mark Animation
 
 /// The animation, that is used to present the notification

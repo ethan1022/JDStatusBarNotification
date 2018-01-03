@@ -32,6 +32,8 @@ NSString *const H2StatusBarStyleSyncFailed = @"H2StatusBarStyleSyncFailed";
   style.progressBarColor = self.progressBarColor;
   style.progressBarHeight = self.progressBarHeight;
   style.progressBarPosition = self.progressBarPosition;
+  style.iconImage = self.iconImage;
+  style.styleName = self.styleName;
   return style;
 }
 
@@ -39,7 +41,8 @@ NSString *const H2StatusBarStyleSyncFailed = @"H2StatusBarStyleSyncFailed";
 {
   return @[JDStatusBarStyleError, JDStatusBarStyleWarning,
            JDStatusBarStyleSuccess, JDStatusBarStyleMatrix,
-           JDStatusBarStyleDark];
+           JDStatusBarStyleDark,
+           H2StatusBarStyleSyncing, H2StatusBarStyleSyncSucceed, H2StatusBarStyleSyncFailed];
 }
 
 + (JDStatusBarStyle*)defaultStyleWithName:(NSString*)styleName;
@@ -53,6 +56,7 @@ NSString *const H2StatusBarStyleSyncFailed = @"H2StatusBarStyleSyncFailed";
   style.textColor = [UIColor grayColor];
   style.font = [UIFont systemFontOfSize:12.0];
   style.animationType = JDStatusBarAnimationTypeMove;
+  style.styleName = styleName;
 
   // JDStatusBarStyleDefault
   if ([styleName isEqualToString:JDStatusBarStyleDefault]) {
@@ -103,6 +107,32 @@ NSString *const H2StatusBarStyleSyncFailed = @"H2StatusBarStyleSyncFailed";
     return style;
   }
 
+  else if ([styleName isEqualToString:H2StatusBarStyleSyncing]) {
+    style.barColor = [UIColor colorWithRed:92.0/255.0 green:213.0/255.0 blue:188.0/255.0 alpha:1.0];
+    style.textColor = [UIColor whiteColor];
+    style.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    style.textVerticalPositionAdjustment = -1.0;
+    style.iconImage = [UIImage imageNamed:@"icSync"];
+    return style;
+  }
+
+  else if ([styleName isEqualToString:H2StatusBarStyleSyncSucceed]) {
+    style.barColor = [UIColor colorWithRed:92.0/255.0 green:213.0/255.0 blue:188.0/255.0 alpha:1.0];
+    style.textColor = [UIColor whiteColor];
+    style.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    style.textVerticalPositionAdjustment = -1.0;
+    style.iconImage = [UIImage imageNamed:@"icSucceed"];
+    return style;
+  }
+
+  else if ([styleName isEqualToString:H2StatusBarStyleSyncFailed]) {
+    style.barColor = [UIColor colorWithRed:252.0/255.0 green:180.0/255.0 blue:93.0/255.0 alpha:1.0];
+    style.textColor = [UIColor whiteColor];
+    style.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
+    style.textVerticalPositionAdjustment = -1.0;
+    style.iconImage = [UIImage imageNamed:@"icFailsyncing"];
+    return style;
+  }
   return nil;
 }
 
