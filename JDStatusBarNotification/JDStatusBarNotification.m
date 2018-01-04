@@ -24,7 +24,7 @@
 - (UIWindow*)mainApplicationWindowIgnoringWindow:(UIWindow*)ignoringWindow;
 @end
 
-@interface JDStatusBarNotification () <CAAnimationDelegate>
+@interface JDStatusBarNotification () <CAAnimationDelegate, JDStatusBarViewDelegate>
 @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
 @property (nonatomic, strong, readonly) UIView *progressView;
 @property (nonatomic, strong, readonly) JDStatusBarView *topBar;
@@ -131,6 +131,10 @@
   return [[self sharedInstance] isVisible];
 }
 
++ (instancetype)instance {
+  return [self sharedInstance];
+}
+
 #pragma mark Implementation
 
 - (id)init
@@ -229,6 +233,20 @@
   } else {
     textLabel.shadowColor = nil;
     textLabel.shadowOffset = CGSizeZero;
+  }
+
+  // update H2 style
+  if ([@[H2StatusBarStyleSyncing, H2StatusBarStyleSyncSucceed, H2StatusBarStyleSyncFailed] containsObject:style.styleName]) {
+    self.topBar.leftIconImgView.image = style.iconImage;
+    self.topBar.textLabel.textAlignment = NSTextAlignmentLeft;
+
+    if ([style.styleName isEqualToString:H2StatusBarStyleSyncFailed]) {
+      [self.topBar updateRightTextLabel:@"Detail" rightIconImage:[UIImage imageNamed:@"icArrowDetail"]];
+      self.topBar.delegate = self;
+      self.overlayWindow.userInteractionEnabled = YES;
+    } else {
+      self.overlayWindow.userInteractionEnabled = NO;
+    }
   }
 
   // reset progress & activity
@@ -519,6 +537,14 @@
     // but rotation animation is still broken
     updateBlock();
   }];
+}
+
+#pragma mark - JDStatusBarViewDelegate
+
+- (void)didTapDetailButton {
+  if ([self.delegate respondsToSelector:@selector(didTapDetailButton)]) {
+    [self.delegate didTapDetailButton];
+  }
 }
 
 @end

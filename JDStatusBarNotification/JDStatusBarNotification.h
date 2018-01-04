@@ -12,6 +12,11 @@
 #import "JDStatusBarStyle.h"
 #import "JDStatusBarView.h"
 
+@protocol JDStatusBarNotificationDelegate
+@optional
+- (void)didTapDetailButton;
+@end
+
 /**
  *  A block that is used to define the appearance of a notification.
  *  A JDStatusBarStyle instance defines the notification appeareance.
@@ -163,6 +168,12 @@ typedef JDStatusBarStyle*(^JDPrepareStyleBlock)(JDStatusBarStyle *style);
  *  @return YES, if a notification is currently displayed. Otherwise NO.
  */
 + (BOOL)isVisible;
+
+#pragma mark -
+
++ (instancetype)instance;
+
+@property (nonatomic, assign) NSObject<JDStatusBarNotificationDelegate> *delegate;
 
 @end
 
