@@ -11,12 +11,67 @@
 
 @interface JDStatusBarView ()
 @property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UILabel *rightTextLabel;
+@property (nonatomic, strong) UIImageView *leftIconImgView;
+@property (nonatomic, strong) UIImageView *rightIconImgView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, strong) UIButton *detailButton;
+
 @end
 
 @implementation JDStatusBarView
 
-#pragma mark dynamic getter
+#pragma mark - instance method
+
+- (void)didTapDetailButton:(UIButton *)btn {
+  if ([self.delegate respondsToSelector:@selector(didTapDetailButton)]) {
+    [self.delegate didTapDetailButton];
+  }
+}
+
+- (void)updateRightTextLabel:(NSString *)text rightIconImage:(UIImage *)image {
+  // detail button
+  if (!self.detailButton) {
+    self.detailButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.detailButton setTitle:@"" forState:UIControlStateNormal];
+    [self.detailButton addTarget:self action:@selector(didTapDetailButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.detailButton];
+  }
+  // right icon image view
+  if (!self.rightIconImgView) {
+    CGFloat padding = 8.0;
+    CGFloat iconWidth = 20;
+    self.rightIconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width - iconWidth - padding, 0, 20, 20)];
+    [self addSubview:self.rightIconImgView];
+  }
+  self.rightIconImgView.image = image;
+
+  //right text label
+  if (!self.rightTextLabel) {
+    self.rightTextLabel = [[UILabel alloc] init];
+    self.rightTextLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
+    self.rightTextLabel.textColor = [UIColor whiteColor];
+    self.rightTextLabel.backgroundColor = [UIColor clearColor];
+    self.rightTextLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+    self.rightTextLabel.textAlignment = NSTextAlignmentCenter;
+    self.rightTextLabel.adjustsFontSizeToFitWidth = YES;
+    self.rightTextLabel.clipsToBounds = YES;
+    [self addSubview:self.rightTextLabel];
+  }
+  self.rightTextLabel.text = text;
+  [self.rightTextLabel sizeToFit];
+}
+
+#pragma mark - dynamic getter
+
+- (UIImageView *)leftIconImgView {
+    if (!_leftIconImgView) {
+        CGFloat padding = 8.0;
+        _leftIconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 0, 20, 20)];
+        [self addSubview:_leftIconImgView];
+    }
+     return _leftIconImgView;
+}
 
 - (UILabel *)textLabel;
 {
@@ -42,7 +97,7 @@
   return _activityIndicatorView;
 }
 
-#pragma mark setter
+#pragma mark - setter
 
 - (void)setTextVerticalPositionAdjustment:(CGFloat)textVerticalPositionAdjustment;
 {
@@ -50,7 +105,7 @@
   [self setNeedsLayout];
 }
 
-#pragma mark layout
+#pragma mark - layout
 
 - (void)layoutSubviews;
 {
@@ -58,9 +113,31 @@
 
   // label
   CGFloat topLayoutMargin = JDStatusBarRootVCLayoutMargin().top;
-  self.textLabel.frame = CGRectMake(0,
+  CGFloat xPoint = self.leftIconImgView ? 30 : 0;
+  CGFloat textLabelWidth = self.bounds.size.width;
+
+  if (self.leftIconImgView) {
+    textLabelWidth = textLabelWidth - CGRectGetWidth(self.leftIconImgView.frame) - 8 - 2; // |-8-leftIconImgView-2-textLabel-|
+  }
+
+  if (self.rightIconImgView) {
+    CGFloat iconImgViewPadding = 5.0;
+    CGFloat iconImgViewWidth = CGRectGetWidth(self.rightIconImgView.frame);
+    CGFloat rightLabelWidth = CGRectGetWidth(self.rightTextLabel.frame);
+    textLabelWidth = textLabelWidth - iconImgViewPadding - iconImgViewWidth - rightLabelWidth;
+    self.rightTextLabel.frame = CGRectMake(self.rightIconImgView.frame.origin.x - rightLabelWidth,
+                                           self.textVerticalPositionAdjustment + topLayoutMargin + 1,
+                                           rightLabelWidth,
+                                           self.bounds.size.height - topLayoutMargin - 1);
+    
+    self.detailButton.frame = CGRectMake(CGRectGetMinX(self.rightTextLabel.frame),
+                                         CGRectGetMinY(self.rightTextLabel.frame),
+                                         rightLabelWidth + iconImgViewWidth,
+                                         CGRectGetHeight(self.rightTextLabel.frame));
+  }
+  self.textLabel.frame = CGRectMake(xPoint,
                                     self.textVerticalPositionAdjustment + topLayoutMargin + 1,
-                                    self.bounds.size.width,
+                                    textLabelWidth,
                                     self.bounds.size.height - topLayoutMargin - 1);
 
   // activity indicator
