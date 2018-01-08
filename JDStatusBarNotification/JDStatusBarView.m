@@ -29,6 +29,25 @@
   }
 }
 
+- (void)updateGradientBackgroundColors:(NSArray<UIColor *> *)colors {
+  if ([self.layer.sublayers[0] isKindOfClass:[CAGradientLayer class]]) {
+    CAGradientLayer *layer = (CAGradientLayer *)self.layer.sublayers[0];
+    [layer removeFromSuperlayer];
+  }
+
+  NSMutableArray *colorsMArray = [NSMutableArray new];
+
+  for (UIColor *color in colors) {
+    [colorsMArray addObject:(__bridge id)color.CGColor];
+  }
+  CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
+  gradientLayer.frame = self.bounds;
+  gradientLayer.colors = colorsMArray;
+  gradientLayer.startPoint = (CGPoint){0.0, 1.0};
+  gradientLayer.endPoint = (CGPoint){1.0, 1.0};
+  [self.layer insertSublayer:gradientLayer atIndex:0];
+}
+
 - (void)updateRightTextLabel:(NSString *)text rightIconImage:(UIImage *)image {
   // detail button
   if (!self.detailButton) {

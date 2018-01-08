@@ -23,5 +23,6 @@
 @property (nonatomic, assign) NSObject<JDStatusBarViewDelegate> *delegate;
 
 - (void)updateRightTextLabel:(NSString *)text rightIconImage:(UIImage *)image;
+- (void)updateGradientBackgroundColors:(NSArray<UIColor *> *)colors;
 
 @end
