@@ -241,10 +241,16 @@
     self.topBar.textLabel.textAlignment = NSTextAlignmentLeft;
 
     if ([style.styleName isEqualToString:H2StatusBarStyleSyncFailed]) {
+      self.overlayWindow.backgroundColor = [UIColor clearColor];
+      self.overlayWindow.frame = CGRectMake(0, 0, self.topBar.frame.size.width, self.topBar.frame.size.height);
       [self.topBar updateRightTextLabel:@"Detail" rightIconImage:[UIImage imageNamed:@"icArrowDetail"]];
       self.topBar.delegate = self;
       self.overlayWindow.userInteractionEnabled = YES;
+      [self.topBar updateGradientBackgroundColors:@[[UIColor colorWithRed:252.0/255.0 green:180.0/255.0 blue:93.0/255.0 alpha:1.0],
+                                                    [UIColor colorWithRed:255.0/255.0 green:164.0/255.0 blue:56.0/255.0 alpha:1.0]]];
     } else {
+      [self.topBar updateGradientBackgroundColors:@[[UIColor colorWithRed:92.0/255.0 green:213.0/255.0 blue:188.0/255.0 alpha:1.0],
+                                                    [UIColor colorWithRed:76.0/255.0 green:201.0/255.0 blue:174.0/255.0 alpha:1.0]]];
       self.overlayWindow.userInteractionEnabled = NO;
     }
   }
