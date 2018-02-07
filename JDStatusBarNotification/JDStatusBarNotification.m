@@ -243,7 +243,7 @@
     if ([style.styleName isEqualToString:H2StatusBarStyleSyncFailed]) {
       self.overlayWindow.backgroundColor = [UIColor clearColor];
       self.overlayWindow.frame = CGRectMake(0, 0, self.topBar.frame.size.width, self.topBar.frame.size.height);
-      [self.topBar updateRightTextLabel:@"Detail" rightIconImage:[UIImage imageNamed:@"icArrowDetail"]];
+      [self.topBar updateRightTextLabel:NSLocalizedString(@"auto_sync_failed_check_reason", @"Check Reason") rightIconImage:[UIImage imageNamed:@"icArrowDetail"]];
       self.topBar.delegate = self;
       self.overlayWindow.userInteractionEnabled = YES;
       [self.topBar updateGradientBackgroundColors:@[[UIColor colorWithRed:252.0/255.0 green:180.0/255.0 blue:93.0/255.0 alpha:1.0],
