@@ -86,7 +86,19 @@
 - (UIImageView *)leftIconImgView {
     if (!_leftIconImgView) {
         CGFloat padding = 8.0;
-        _leftIconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 0, 20, 20)];
+        CGFloat topSafeArea = 0.0;
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+            switch ((int)[[UIScreen mainScreen] nativeBounds].size.height) {
+                case 2436: //iPhone X/XS/11 Pro
+                case 2688: //iPhone XS Max/11 Pro Max
+                case 1792: //iPhone XR/ 11
+                    topSafeArea = [UIApplication sharedApplication].keyWindow.safeAreaInsets.top + 10;
+                    break;
+                default:
+                    break;
+            }
+        }
+        _leftIconImgView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, topSafeArea, 20, 20)];
         [self addSubview:_leftIconImgView];
     }
      return _leftIconImgView;
